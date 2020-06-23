@@ -24,3 +24,9 @@ class HomeView(generic.ListView):
         """
         nameDicts = Framedata.objects.order_by('character').values('character').distinct()
         return nameDicts
+
+class CreditView(generic.TemplateView):
+    template_name = 'matchups/credits.html'
+
+class AboutView(generic.TemplateView):
+    template_name = 'matchups/about.html'
