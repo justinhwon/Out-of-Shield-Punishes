@@ -213,8 +213,4 @@ def MatchupSearchView(request):
             'punishList': punishList,
             'shieldChar': shieldChar,
             'attackChar': attackChar,
-            'shieldFrame': shieldCharMoves,
-            'attackFrame': attackCharMoves,
-            'shieldCharData': shieldCharData,
-            'attackCharData': attackCharData,
         })
