@@ -76,6 +76,9 @@ def MatchupSearchView(request):
                 shieldCharMoves.append([moveName, moveFrame, moveStartupFrame, moveStartupComplete])
             # Up-B and Upsmash are instantaneous
             elif "(Up-B)" in move.move or move.move in ("U-Smash", "U-Smash "):
+                # some up-b are not attacks (e.g. teleport), so just skip
+                if not move.startup:
+                    continue
                 moveName = move.move
                 moveStartupComplete = move.startup
                 moveStartupFrame = int(re.findall(r'\d+', moveStartupComplete)[0])
@@ -89,7 +92,7 @@ def MatchupSearchView(request):
         # get all attack character moves and parse their frame advantage
         # [name, frame advantage]
         attackCharMoves = []
-        for move in shieldCharData:
+        for move in attackCharData:
             # don't include grab and make sure advantage number exists
             if move.move not in ("Grab", "Grab ") and move.advantage:
                 moveName = move.move
@@ -107,7 +110,7 @@ def MatchupSearchView(request):
         i, j = 0, 0
 
         # if currently there are unpunishable moves, make a list of those and update i,j
-        if shieldCharMoves[i][1] > attackCharMoves[j][1]:
+        if shieldCharMoves[i][1] + attackCharMoves[j][1] > 0:
             punishOptions = []
             punishableMoves = []
             # push j until j CAN be punished by i
@@ -127,7 +130,7 @@ def MatchupSearchView(request):
 
             # move CANNOT be punished OOS if frame disadvantage + startup > 0
             # move CAN be punished OOS if frame disadvantage + startup <= 0
-            
+
             # push i until j CANNOT be punished by i
             while shieldCharMoves[i][1] + attackCharMoves[j][1] <= 0:
                 punishOptions.append(shieldCharMoves[i])
@@ -151,6 +154,8 @@ def MatchupSearchView(request):
             while shieldCharMoves[i][1] + attackCharMoves[j][1] > 0:
                 punishableMoves.append(attackCharMoves[j])
                 j += 1
+                if j >= len(attackCharMoves):
+                    break
             
             # punishOptions is now the limit of what moves can punish current punishableMoves
             # punishableMoves is the limit of what moves can be punished by current punishOptions
@@ -159,6 +164,7 @@ def MatchupSearchView(request):
 
         # Return all moves from each char
         return render(request, 'matchups/matchup.html', {
+            'punishList': punishList,
             'shieldChar': shieldChar,
             'attackChar': attackChar,
             'shieldFrame': shieldCharMoves,

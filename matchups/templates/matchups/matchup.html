@@ -5,10 +5,34 @@
     <div style="display: inline-block; text-align: left;">
         <h3><b>{{shieldChar}}'s Out of Shield Punishes against {{attackChar}} </b></h3>
 
-        <b>Out of Shield Option format:</b> <br>
-        "Move: Frame OOS [Startup Frames]" <br>
+        <b>Out of Shield option format:</b> <br>
+        "Move: Frame Active OOS [Startup Frames]" <br>
         <b>Attack on shield format:</b> <br>
-        "Move: Least Frames Negative on Shield [All Possible Frame Advantage on Shield]" <br> <br>
+        "Move: Least Frames Negative on Shield [All Possible Frame Advantage on Shield]" <br>
+        <b>Moves in bold can be used to punish all attacks on shield below them (not accounting for spacing/whiffing).</b> <br><br>
+
+        {% for group in punishList %}
+
+            {% if not group.0 %}
+            <b>Unpunishable:</b> <br>
+            {% else %}
+            <b>Punishable by:</b> <br>
+            {% endif %}
+
+            {% for move in group.0 %}
+                <b>{{move.0}}: {{move.1}} &nbsp;[{{move.3}}]</b><br>
+            {% endfor %}
+            <hr>
+
+
+            {% for move in group.1 %}
+                {{move.0}}: {{move.1}} &nbsp;[{{move.2}}]<br>
+            {% endfor %}
+            <br>
+        {% endfor %}
+
+        <!-- debugging statements
+        <br>
 
         {% for move in shieldFrame %}
             {{move.0}}: {{move.1}} &nbsp;[{{move.3}}]<br>
@@ -31,6 +55,8 @@
         {% for move in attackCharData %}
             {{move.move}}: {{move.advantage}} <br>
         {% endfor %}
+
+        -->
     </div>
 </div>
 
