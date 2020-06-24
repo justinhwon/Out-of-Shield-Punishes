@@ -102,9 +102,60 @@ def MatchupSearchView(request):
 
         # now create lists of which attackChar moves are punishable by which shieldChar moves on shield
         # keep building solution starting from fastest shieldChar moves
-        #while i < range(len(attackCharMoves)) or j < range(shieldCharMoves):
-            # move cannot be punished oos if frame disadvantage + startup > 0
-            #if shieldCharMoves[0] + attackCharMoves[i] > 0:
+        
+        punishList = []
+        i, j = 0, 0
+
+        # if currently there are unpunishable moves, make a list of those and update i,j
+        if shieldCharMoves[i][1] > attackCharMoves[j][1]:
+            punishOptions = []
+            punishableMoves = []
+            # push j until j CAN be punished by i
+            while shieldCharMoves[i][1] + attackCharMoves[j][1] > 0:
+                punishableMoves.append(attackCharMoves[j])
+                j+=1
+            punishList.append([punishOptions, punishableMoves])
+
+        # end loop when no moves remain
+        while i < len(shieldCharMoves) or j < len(attackCharMoves):
+            punishOptions = []
+            punishableMoves = []
+
+            # if there remains a move that cannot punish anything, just end
+            if j >= len(attackCharMoves):
+                break
+
+            # move CANNOT be punished OOS if frame disadvantage + startup > 0
+            # move CAN be punished OOS if frame disadvantage + startup <= 0
+            
+            # push i until j CANNOT be punished by i
+            while shieldCharMoves[i][1] + attackCharMoves[j][1] <= 0:
+                punishOptions.append(shieldCharMoves[i])
+                i += 1
+                # finish up if i at end of OOS move list
+                if i >= len(shieldCharMoves):
+                    break
+
+            # if i > max length, only j left so put all remaining j into punishable moves
+            # and finish up
+            if i >= len(shieldCharMoves):
+                while j < len(attackCharMoves):
+                    punishableMoves.append(attackCharMoves[j])
+                    j += 1
+                punishList.append([punishOptions, punishableMoves])
+                break
+                
+
+            # current j is not punishable by i
+            # push j until j CAN be punished by i
+            while shieldCharMoves[i][1] + attackCharMoves[j][1] > 0:
+                punishableMoves.append(attackCharMoves[j])
+                j += 1
+            
+            # punishOptions is now the limit of what moves can punish current punishableMoves
+            # punishableMoves is the limit of what moves can be punished by current punishOptions
+
+            punishList.append([punishOptions, punishableMoves])
 
         # Return all moves from each char
         return render(request, 'matchups/matchup.html', {
