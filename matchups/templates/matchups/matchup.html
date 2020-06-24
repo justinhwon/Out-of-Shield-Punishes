@@ -1,0 +1,27 @@
+{% extends "matchups/base.html" %}
+
+{% block content %}
+
+{% for move in shieldFrame %}
+    {{move.0}}: {{move.1}} [{{move.3}}]<br>
+{% endfor %}
+
+<br>
+
+{% for move in attackFrame %}
+    {{move.0}}: {{move.1}}<br>
+{% endfor %}
+
+<br>
+
+{% for move in shieldCharData %}
+    {{move.move}}: {{move.startup}} <br>
+{% endfor %}
+
+<br>
+
+{% for move in attackCharData %}
+    {{move.move}}: {{move.advantage}} <br>
+{% endfor %}
+
+{% endblock %}

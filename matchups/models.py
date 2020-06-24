@@ -17,3 +17,9 @@ class Framedata(models.Model):
     class Meta:
         managed = False
         db_table = 'framedata'
+
+    def __str__(self):
+        """
+        String representation of a Framedata object.
+        """
+        return self.character + ': ' + self.move
