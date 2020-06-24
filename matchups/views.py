@@ -34,8 +34,10 @@ class AboutView(generic.TemplateView):
 
 def MatchupSearchView(request):
     try:
-        shieldCharData = Framedata.objects.filter(character=request.GET['Shielding Character'])
-        attackCharData = Framedata.objects.filter(character=request.GET['Attacking Character'])
+        shieldChar = request.GET['Shielding Character']
+        attackChar = request.GET['Attacking Character']
+        shieldCharData = Framedata.objects.filter(character=shieldChar)
+        attackCharData = Framedata.objects.filter(character=attackChar)
     except:
         # Error if character names not chosen correctly
         raise Http404("Character name does not exist. Please choose a name from the dropdown.")
@@ -79,6 +81,10 @@ def MatchupSearchView(request):
                 moveStartupFrame = int(re.findall(r'\d+', moveStartupComplete)[0])
                 moveFrame = moveStartupFrame
                 shieldCharMoves.append([moveName, moveFrame, moveStartupFrame, moveStartupComplete])
+            #don't include other moves
+
+        # once list is complete, sort by frame oos (least to greatest)
+        shieldCharMoves.sort(key = lambda x: x[1])
 
         # get all attack character moves and parse their frame advantage
         # [name, frame advantage]
@@ -87,11 +93,23 @@ def MatchupSearchView(request):
             # don't include grab and make sure advantage number exists
             if move.move not in ("Grab", "Grab ") and move.advantage:
                 moveName = move.move
-                moveAdvantage = int(re.findall(r'[+-]?\d+', move.advantage)[0])
-                attackCharMoves.append([moveName, moveAdvantage])
+                # get the highest value advantage number
+                moveAdvantage = max(list(map(int, re.findall(r'[+-]?\d+', move.advantage))))
+                attackCharMoves.append([moveName, moveAdvantage, move.advantage])
+        
+        # once list is complete, sort by frame advantage (greatest to least)
+        attackCharMoves.sort(key = lambda x: x[1], reverse=True)
+
+        # now create lists of which attackChar moves are punishable by which shieldChar moves on shield
+        # keep building solution starting from fastest shieldChar moves
+        #while i < range(len(attackCharMoves)) or j < range(shieldCharMoves):
+            # move cannot be punished oos if frame disadvantage + startup > 0
+            #if shieldCharMoves[0] + attackCharMoves[i] > 0:
 
         # Return all moves from each char
         return render(request, 'matchups/matchup.html', {
+            'shieldChar': shieldChar,
+            'attackChar': attackChar,
             'shieldFrame': shieldCharMoves,
             'attackFrame': attackCharMoves,
             'shieldCharData': shieldCharData,

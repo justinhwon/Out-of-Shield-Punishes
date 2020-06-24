@@ -1,27 +1,37 @@
 {% extends "matchups/base.html" %}
 
 {% block content %}
+<div style="text-align: center; margin-left:10px; margin-right:10px;">
+    <div style="display: inline-block; text-align: left;">
+        <h3><b>{{shieldChar}}'s Out of Shield Punishes against {{attackChar}} </b></h3>
 
-{% for move in shieldFrame %}
-    {{move.0}}: {{move.1}} [{{move.3}}]<br>
-{% endfor %}
+        <b>Out of Shield Option format:</b> <br>
+        "Move: Frame OOS [Startup Frames]" <br>
+        <b>Attack on shield format:</b> <br>
+        "Move: Least Frames Negative on Shield [All Possible Frame Advantage on Shield]" <br> <br>
 
-<br>
+        {% for move in shieldFrame %}
+            {{move.0}}: {{move.1}} &nbsp;[{{move.3}}]<br>
+        {% endfor %}
 
-{% for move in attackFrame %}
-    {{move.0}}: {{move.1}}<br>
-{% endfor %}
+        <br>
 
-<br>
+        {% for move in attackFrame %}
+            {{move.0}}: {{move.1}} &nbsp;[{{move.2}}]<br>
+        {% endfor %}
 
-{% for move in shieldCharData %}
-    {{move.move}}: {{move.startup}} <br>
-{% endfor %}
+        <br>
 
-<br>
+        {% for move in shieldCharData %}
+            {{move.move}}: {{move.startup}} <br>
+        {% endfor %}
 
-{% for move in attackCharData %}
-    {{move.move}}: {{move.advantage}} <br>
-{% endfor %}
+        <br>
+
+        {% for move in attackCharData %}
+            {{move.move}}: {{move.advantage}} <br>
+        {% endfor %}
+    </div>
+</div>
 
 {% endblock %}
