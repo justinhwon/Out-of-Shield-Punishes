@@ -107,6 +107,51 @@ def MatchupSearchView(request):
         # keep building solution starting from fastest shieldChar moves
         
         punishList = []
+        #if at start there are unpunishable moves
+        if shieldCharMoves[0][1] + attackCharMoves[0][1] > 0:
+            punishOptions = []
+            punishableMoves = []
+            # pop from attackCharMoves until punishable
+            while shieldCharMoves[0][1] + attackCharMoves[0][1] > 0:
+                punishableMoves.append(attackCharMoves.pop(0))
+            punishList.append([punishOptions, punishableMoves])
+        
+        # end loop when no moves remain
+        while shieldCharMoves or attackCharMoves:
+            punishOptions = []
+            punishableMoves = []
+
+            # if there remains a move that cannot punish anything, just end
+            if not attackCharMoves:
+                break
+
+            # move CANNOT be punished OOS if frame disadvantage + startup > 0
+            # move CAN be punished OOS if frame disadvantage + startup <= 0
+
+            # pop from shieldCharMoves until attackCharMove cannot be punished
+            while shieldCharMoves and shieldCharMoves[0][1] + attackCharMoves[0][1] <= 0:
+                punishOptions.append(shieldCharMoves.pop(0))
+
+            # if no more shieldCharMoves, only attackCharMoves left so put all 
+            # remaining attackCharMoves into punishable moves and finish up
+            if not shieldCharMoves:
+                while attackCharMoves:
+                    punishableMoves.append(attackCharMoves.pop(0))
+                punishList.append([punishOptions, punishableMoves])
+                break
+                
+            # current attackCharMove is not punishable by shieldCharMove
+            # pop from attackCharMove until it CAN be punished by shieldCharMove
+            while attackCharMoves and shieldCharMoves[0][1] + attackCharMoves[0][1] > 0:
+                punishableMoves.append(attackCharMoves.pop(0))
+            
+            # punishOptions is now the limit of what moves can punish current punishableMoves
+            # punishableMoves is the limit of what moves can be punished by current punishOptions
+
+            punishList.append([punishOptions, punishableMoves])
+
+
+        """ # better solution (space/readability-wise) just using lists as stacks
         i, j = 0, 0
 
         # if currently there are unpunishable moves, make a list of those and update i,j
@@ -161,6 +206,7 @@ def MatchupSearchView(request):
             # punishableMoves is the limit of what moves can be punished by current punishOptions
 
             punishList.append([punishOptions, punishableMoves])
+        """
 
         # Return all moves from each char
         return render(request, 'matchups/matchup.html', {
