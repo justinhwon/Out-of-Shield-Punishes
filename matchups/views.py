@@ -54,7 +54,7 @@ def MatchupSearchView(request):
                 moveFrame = moveStartupFrame + 11
                 shieldCharMoves.append([moveName, moveFrame, moveStartupFrame, moveStartupComplete])
             # aerials add 3 frames
-            elif move.move in ("F-Air", "F-Air ", "N-Air", "N-Air ", "B-Air", "B-Air ", "D-Air", "D-Air ", "Z-Air", "Z-Air "):
+            elif move.move in ("F-Air", "F-Air ", "N-Air", "N-Air ", "B-Air", "B-Air ", "D-Air", "D-Air ", "U-Air", "U-Air ", "Z-Air", "Z-Air "):
                 moveName = move.move
                 moveStartupComplete = move.startup
                 moveStartupFrame = int(re.findall(r'\d+', moveStartupComplete)[0])
