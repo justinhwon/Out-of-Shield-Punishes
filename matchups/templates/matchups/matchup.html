@@ -218,26 +218,25 @@
         "Move: Frame Active OOS [Startup Frames]" <br>
         <b>Attack on shield format:</b> <br>
         "Move: Least Frames Negative on Shield [All Possible Frame Advantage on Shield]" <br>
-        <b>Moves in bold can be used to punish all attacks on shield below them (not accounting for spacing/whiffing).</b> <br><br>
+        <b>Moves in bold can be used to punish all attacks on shield below them (not accounting for spacing/whiffing).</b> <br>
+        <hr>
 
         {% for group in punishList %}
 
             {% if not group.0 %}
             <b>Unpunishable:</b> <br>
             {% else %}
-            <b>Punishable by:</b> <br>
+            <b>Punishable using:</b> <br>
             {% endif %}
 
             {% for move in group.0 %}
-                <b>{{move.0}}: {{move.1}} &nbsp;[{{move.3}}]</b><br>
+                <li><b>{{move.0}}: {{move.1}} &nbsp;[{{move.3}}]</b></li>
             {% endfor %}
-            <hr>
-
-
+            <div style="height:7px;font-size:7px;">&nbsp;</div>
             {% for move in group.1 %}
                 {{move.0}}: {{move.1}} &nbsp;[{{move.2}}]<br>
             {% endfor %}
-            <br>
+            <hr>
         {% endfor %}
 
         <!-- debugging statements
