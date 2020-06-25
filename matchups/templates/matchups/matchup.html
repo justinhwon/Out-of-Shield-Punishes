@@ -223,21 +223,30 @@
 
         {% for group in punishList %}
 
+          <div class="p-3 mb-0 text-dark" style="background-color: rgba(128, 128, 128, 0.2);">
+
             {% if not group.0 %}
-            <b>Unpunishable:</b> <br>
+            <b>Unpunishable (when perfectly timed):</b> <br>
             {% else %}
             <b>Punishable using:</b> <br>
             {% endif %}
 
             {% for move in group.0 %}
-                <li><b>{{move.0}}: {{move.1}} &nbsp;[{{move.3}}]</b></li>
+                <b>{{move.0}}: {{move.1}} &nbsp;[{{move.3}}]</b><br>
             {% endfor %}
-            <div style="height:7px;font-size:7px;">&nbsp;</div>
+
+          </div>
+          <div class="p-3 mb-0 text-dark" style="background-color: rgba(128, 128, 128, 0.01);">
+
             {% for move in group.1 %}
                 {{move.0}}: {{move.1}} &nbsp;[{{move.2}}]<br>
             {% endfor %}
-            <hr>
+
+          </div>
+
         {% endfor %}
+
+        <br>
 
         <!-- debugging statements
         <br>
