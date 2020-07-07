@@ -32,6 +32,15 @@ class CreditView(generic.TemplateView):
 class AboutView(generic.TemplateView):
     template_name = 'matchups/about.html'
 
+class PrivacyView(generic.TemplateView):
+    template_name = 'matchups/privacypolicy.html'
+
+class CookieView(generic.TemplateView):
+    template_name = 'matchups/cookiepolicy.html'
+
+class TermsView(generic.TemplateView):
+    template_name = 'matchups/termsconditions.html'
+
 def MatchupSearchView(request):
     try:
         shieldChar = request.GET['Shielding Character']
@@ -54,7 +63,7 @@ def MatchupSearchView(request):
                 moveFrame = moveStartupFrame + 11
                 shieldCharMoves.append([moveName, moveFrame, moveStartupFrame, moveStartupComplete])
             # aerials add 3 frames
-            elif move.move in ("F-Air", "F-Air ", "N-Air", "N-Air ", "B-Air", "B-Air ", "D-Air", "D-Air ", "U-Air", "U-Air ", "Z-Air", "Z-Air "):
+            elif move.move in ("F-Air", "F-Air ", "N-Air", "N-Air ", "B-Air", "B-Air ", "D-Air", "D-Air ", "U-Air", "U-Air ", "Z-Air", "Z-Air ", "N-Air (either Dragon)", "N-Air (Ramram)", "N-Air (Megawatt)"):
                 moveName = move.move
                 moveStartupComplete = move.startup
                 moveStartupFrame = int(re.findall(r'\d+', moveStartupComplete)[0])
