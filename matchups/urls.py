@@ -11,4 +11,5 @@ urlpatterns = [
     path('privacypolicy', views.PrivacyView.as_view(), name='privacy'),
     path('termsandconditions', views.TermsView.as_view(), name='terms'),
     path('cookiepolicy', views.CookieView.as_view(), name='cookie'),
+    path('sitemap.xml', views.SitemapView.as_view(), name='sitemap')
 ]
