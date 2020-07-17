@@ -3,6 +3,14 @@
 {% block content %}
 <div style="text-align: center; margin-left:10px; margin-right:10px;">
     <div style="display: inline-block; text-align: left;">
+
+      <div class="text-center" id="newSearchButton">
+        <br>
+        <button class="btn btn-primary" onclick="showNewSearch()">Search New Matchup</button>
+        <br> <br>
+      </div>
+
+      <div id="newSearch" style="display: none">
         <div class="text-center">
             <hr>
             <b>Search New Matchup</b>
@@ -213,7 +221,21 @@
                 });
               }
             </script>
-            <br>
+          </div>
+
+        <script>
+            function showNewSearch() {
+              var x = document.getElementById("newSearch");
+              var y = document.getElementById("newSearchButton");
+              if (x.style.display === "none") {
+                x.style.display = "block";
+                y.style.display = "none";
+              } else {
+                x.style.display = "none";
+              }
+            }
+        </script>
+
         <h3><b>{{shieldChar}}'s Out of Shield Punishes against {{attackChar}} </b></h3>
 
         <b>Out of Shield option format:</b> <br>
@@ -248,7 +270,242 @@
 
         {% endfor %}
 
-        <br>
+        <br> <br>
+
+        <div class="text-center" id="newSearchButton2">
+          <br>
+          <button class="btn btn-secondary" onclick="showNewSearch2()">Search New Matchup</button>
+          <br> <br>
+          <br> <br> <br> <br> <br> <br> <br> <br>
+        </div>
+  
+        <div id="newSearch2" style="display: none">
+          <div class="text-center">
+              <hr>
+              <b>Search New Matchup</b>
+              <form action="{% url 'matchups:matchup' %}" method="get">
+              
+                <label for="Shielding Character">Enter shielding character:</label>
+                <input list="Shielding Character" name="Shielding Character" placeholder="Enter character name" required>
+                <datalist id="Shielding Character">
+                  <option value="Banjo & Kazooie"> 
+                      <option value="Bayonetta"> 
+                      <option value="Bowser"> 
+                      <option value="Bowser Jr."> 
+                      <option value="Byleth"> 
+                      <option value="Captain Falcon"> 
+                      <option value="Charizard"> 
+                      <option value="Chrom"> 
+                      <option value="Cloud"> 
+                      <option value="Corrin"> 
+                      <option value="Diddy Kong"> 
+                      <option value="Donkey Kong"> 
+                      <option value="Dr. Mario"> 
+                      <option value="Duck Hunt"> 
+                      <option value="Falco"> 
+                      <option value="Fox"> 
+                      <option value="Ganondorf"> 
+                      <option value="Greninja"> 
+                      <option value="Hero"> 
+                      <option value="Ice Climbers"> 
+                      <option value="Ike"> 
+                      <option value="Incineroar"> 
+                      <option value="Inkling"> 
+                      <option value="Isabelle"> 
+                      <option value="Ivysaur"> 
+                      <option value="Jigglypuff"> 
+                      <option value="Joker"> 
+                      <option value="Ken"> 
+                      <option value="King Dedede"> 
+                      <option value="King K. Rool"> 
+                      <option value="Kirby"> 
+                      <option value="Link"> 
+                      <option value="Little Mac"> 
+                      <option value="Lucario"> 
+                      <option value="Lucas"> 
+                      <option value="Lucina"> 
+                      <option value="Luigi"> 
+                      <option value="Mario"> 
+                      <option value="Marth"> 
+                      <option value="Mega Man"> 
+                      <option value="Meta Knight"> 
+                      <option value="Mewtwo"> 
+                      <option value="Mii Brawler"> 
+                      <option value="Mii Gunner"> 
+                      <option value="Mii Swordfighter">
+                      <option value="Min Min"> 
+                      <option value="Mr. Game & Watch"> 
+                      <option value="Ness"> 
+                      <option value="Olimar"> 
+                      <option value="Pac-Man"> 
+                      <option value="Palutena"> 
+                      <option value="Peach/Daisy"> 
+                      <option value="Pichu"> 
+                      <option value="Pikachu"> 
+                      <option value="Piranha Plant"> 
+                      <option value="Pit/Dark Pit"> 
+                      <option value="Ridley"> 
+                      <option value="R.O.B."> 
+                      <option value="Robin"> 
+                      <option value="Rosalina & Luma"> 
+                      <option value="Roy"> 
+                      <option value="Ryu"> 
+                      <option value="Samus/Dark Samus"> 
+                      <option value="Sheik"> 
+                      <option value="Shulk"> 
+                      <option value="Simon/Richter"> 
+                      <option value="Snake"> 
+                      <option value="Sonic"> 
+                      <option value="Squirtle"> 
+                      <option value="Terry"> 
+                      <option value="Toon Link"> 
+                      <option value="Villager"> 
+                      <option value="Wario"> 
+                      <option value="Wii Fit Trainer"> 
+                      <option value="Wolf"> 
+                      <option value="Yoshi"> 
+                      <option value="Young Link"> 
+                      <option value="Zelda"> 
+                      <option value="Zero Suit Samus"> 
+                </datalist>
+          
+                <br>
+          
+          
+                <label for="Attacking Character">Enter attacking character:</label>
+                <input list="Attacking Character" name="Attacking Character" placeholder="Enter character name" required>
+                <datalist id="Attacking Character">
+                      <option value="Banjo & Kazooie"> 
+                      <option value="Bayonetta"> 
+                      <option value="Bowser"> 
+                      <option value="Bowser Jr."> 
+                      <option value="Byleth"> 
+                      <option value="Captain Falcon"> 
+                      <option value="Charizard"> 
+                      <option value="Chrom"> 
+                      <option value="Cloud"> 
+                      <option value="Corrin"> 
+                      <option value="Diddy Kong"> 
+                      <option value="Donkey Kong"> 
+                      <option value="Dr. Mario">
+                      <option value="Duck Hunt">
+                      <option value="Falco"> 
+                      <option value="Fox"> 
+                      <option value="Ganondorf"> 
+                      <option value="Greninja"> 
+                      <option value="Hero"> 
+                      <option value="Ice Climbers"> 
+                      <option value="Ike"> 
+                      <option value="Incineroar"> 
+                      <option value="Inkling"> 
+                      <option value="Isabelle"> 
+                      <option value="Ivysaur"> 
+                      <option value="Jigglypuff"> 
+                      <option value="Joker"> 
+                      <option value="Ken"> 
+                      <option value="King Dedede"> 
+                      <option value="King K. Rool"> 
+                      <option value="Kirby"> 
+                      <option value="Link"> 
+                      <option value="Little Mac"> 
+                      <option value="Lucario"> 
+                      <option value="Lucas"> 
+                      <option value="Lucina"> 
+                      <option value="Luigi"> 
+                      <option value="Mario"> 
+                      <option value="Marth"> 
+                      <option value="Mega Man"> 
+                      <option value="Meta Knight"> 
+                      <option value="Mewtwo"> 
+                      <option value="Mii Brawler"> 
+                      <option value="Mii Gunner"> 
+                      <option value="Mii Swordfighter"> 
+                      <option value="Min Min"> 
+                      <option value="Mr. Game & Watch"> 
+                      <option value="Ness"> 
+                      <option value="Olimar"> 
+                      <option value="Pac-Man"> 
+                      <option value="Palutena"> 
+                      <option value="Peach/Daisy"> 
+                      <option value="Pichu"> 
+                      <option value="Pikachu"> 
+                      <option value="Piranha Plant"> 
+                      <option value="Pit/Dark Pit"> 
+                      <option value="Ridley"> 
+                      <option value="R.O.B."> 
+                      <option value="Robin"> 
+                      <option value="Rosalina & Luma"> 
+                      <option value="Roy"> 
+                      <option value="Ryu"> 
+                      <option value="Samus/Dark Samus"> 
+                      <option value="Sheik"> 
+                      <option value="Shulk"> 
+                      <option value="Simon/Richter"> 
+                      <option value="Snake"> 
+                      <option value="Sonic"> 
+                      <option value="Squirtle"> 
+                      <option value="Terry"> 
+                      <option value="Toon Link"> 
+                      <option value="Villager"> 
+                      <option value="Wario"> 
+                      <option value="Wii Fit Trainer"> 
+                      <option value="Wolf"> 
+                      <option value="Yoshi"> 
+                      <option value="Young Link"> 
+                      <option value="Zelda"> 
+                      <option value="Zero Suit Samus"> 
+                </datalist>
+              
+              
+                <div class="text">
+                  <div style="height:7px;font-size:7px;">&nbsp;</div>
+                  <button type="submit" class="btn btn-primary">Get punish options!</button>
+                </div>
+              </form>
+              <hr>
+              </div>
+          
+              <script>
+                // Find all inputs on the DOM which are bound to a datalist via their list attribute.
+                var inputs = document.querySelectorAll('input[list]');
+                for (var i = 0; i < inputs.length; i++) {
+                  // When the value of the input changes...
+                  inputs[i].addEventListener('change', function() {
+                    var optionFound = false,
+                      datalist = this.list;
+                    // Determine whether an option exists with the current value of the input.
+                    for (var j = 0; j < datalist.options.length; j++) {
+                        if (this.value == datalist.options[j].value) {
+                            optionFound = true;
+                            break;
+                        }
+                    }
+                    // use the setCustomValidity function of the Validation API
+                    // to provide an user feedback if the value does not exist in the datalist
+                    if (optionFound) {
+                      this.setCustomValidity('');
+                    } else {
+                      this.setCustomValidity('Please select a valid value.');
+                    }
+                  });
+                }
+              </script>
+            </div>
+  
+          <script>
+              function showNewSearch2() {
+                var x = document.getElementById("newSearch2");
+                var y = document.getElementById("newSearchButton2");
+                if (x.style.display === "none") {
+                  x.style.display = "block";
+                  y.style.display = "none";
+                } else {
+                  x.style.display = "none";
+                }
+              }
+          </script>
+
+          
 
         <!-- debugging statements
         <br>
