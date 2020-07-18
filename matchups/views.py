@@ -15,7 +15,6 @@ import re
 from .models import Framedata
 
 # Create your views here.
-'''
 class HomeView(generic.ListView):
     template_name = 'matchups/home.html'
     context_object_name = 'character_list'
@@ -26,9 +25,6 @@ class HomeView(generic.ListView):
         """
         nameDicts = Framedata.objects.order_by('character').values('character').distinct()
         return nameDicts
-'''
-class HomeView(generic.TemplateView):
-    template_name = 'matchups/home.html'
 
 class SitemapView(generic.TemplateView):
     template_name = 'matchups/sitemap.xml'
