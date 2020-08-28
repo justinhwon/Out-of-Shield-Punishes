@@ -29,8 +29,8 @@ DEBUG = False
 ALLOWED_HOSTS = ['0.0.0.0', '192.168.0.152', '.herokuapp.com', '.outofshield.com']
 
 # enforce https and www, turn off when debugging
-SECURE_SSL_REDIRECT = True
-PREPEND_WWW = True
+SECURE_SSL_REDIRECT = False
+PREPEND_WWW = False
 
 
 # Application definition
