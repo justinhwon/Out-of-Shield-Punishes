@@ -12,7 +12,7 @@ from django.db.models import Avg
 import math
 import re
 
-from .models import Framedata
+from .models import Framedata, Meleeoos, Meleeframedata
 
 # Create your views here.
 '''
@@ -29,6 +29,17 @@ class HomeView(generic.ListView):
 '''
 class HomeView(generic.TemplateView):
     template_name = 'matchups/home.html'
+
+class HomeMeleeView(generic.ListView):
+    template_name = 'matchups/homemelee.html'
+    context_object_name = 'character_list'
+
+    def get_queryset(self):
+        """
+        Return all characters ordered alphabetically.
+        """
+        nameDicts = Meleeframedata.objects.order_by('character').values('character').distinct()
+        return nameDicts
 
 class SitemapView(generic.TemplateView):
     template_name = 'matchups/sitemap.xml'
@@ -344,6 +355,185 @@ def MatchupSearchView(request):
 
         # Return all moves from each char
         return render(request, 'matchups/matchup.html', {
+            'punishList': punishList,
+            'safeList': safeList,
+            'shieldChar': request.GET['Your Character'],
+            'attackChar': request.GET['Opponent Character'],
+        })
+
+def MeleeMatchupSearchView(request):
+    try:
+        shieldChar = request.GET['Your Character']
+        attackChar = request.GET['Opponent Character']
+        shieldCharData = Meleeoos.objects.filter(character=shieldChar)
+        attackCharData = Meleeframedata.objects.filter(character=attackChar)
+    except:
+        # Error if character names not chosen correctly
+        raise Http404("Character name does not exist. Please choose a name from the dropdown.")
+    else:
+        # get all shield character moves and their first frame OOS
+        # [name, frame oos, notes]
+        shieldCharMoves = []
+        for move in shieldCharData:
+            moveName = move.move
+            moveFrameComplete = move.frame
+            moveFrame = int(re.findall(r'\d+', moveFrameComplete)[0])
+            moveNotes = move.notes
+            shieldCharMoves.append([moveName, moveFrame, moveFrameComplete, moveNotes])
+
+        # once list is complete, sort by frame oos (least to greatest)
+        shieldCharMoves.sort(key = lambda x: x[1])
+
+        # get all attack character moves and parse their frame advantage
+        # [name, frame advantage, frame advantage full details]
+        attackCharMoves = []
+        for move in attackCharData:
+            # don't include grab and make sure advantage number exists
+            if move.move not in ("Grab", "Grab ", "Rapid Jabs Loop", "Pummel") and move.frame_advantage:
+                moveName = move.move
+                # get the highest value advantage number
+                moveAdvantage = max(list(map(int, re.findall(r'[+-]?\d+', move.frame_advantage))))
+                attackCharMoves.append([moveName, moveAdvantage, move.frame_advantage])
+        
+        # once list is complete, sort by frame advantage (greatest to least)
+        attackCharMoves.sort(key = lambda x: x[1], reverse=True)
+
+        # now create lists of which attackChar moves are punishable by which shieldChar moves on shield
+        # keep building solution starting from fastest shieldChar moves
+        
+        punishList = []
+        #if at start there are unpunishable moves
+        if shieldCharMoves[0][1] + attackCharMoves[0][1] > 0:
+            punishOptions = []
+            punishableMoves = []
+            # pop from attackCharMoves until punishable
+            while shieldCharMoves[0][1] + attackCharMoves[0][1] > 0:
+                punishableMoves.append(attackCharMoves.pop(0))
+            punishList.append([punishOptions, punishableMoves])
+        
+        # end loop when no moves remain
+        while shieldCharMoves or attackCharMoves:
+            punishOptions = []
+            punishableMoves = []
+
+            # if there remains a move that cannot punish anything, just end
+            if not attackCharMoves:
+                break
+
+            # move CANNOT be punished OOS if frame disadvantage + startup > 0
+            # move CAN be punished OOS if frame disadvantage + startup <= 0
+
+            # pop from shieldCharMoves until attackCharMove cannot be punished
+            while shieldCharMoves and shieldCharMoves[0][1] + attackCharMoves[0][1] <= 0:
+                punishOptions.append(shieldCharMoves.pop(0))
+
+            # if no more shieldCharMoves, only attackCharMoves left so put all 
+            # remaining attackCharMoves into punishable moves and finish up
+            if not shieldCharMoves:
+                while attackCharMoves:
+                    punishableMoves.append(attackCharMoves.pop(0))
+                punishList.append([punishOptions, punishableMoves])
+                break
+                
+            # current attackCharMove is not punishable by shieldCharMove
+            # pop from attackCharMove until it CAN be punished by shieldCharMove
+            while attackCharMoves and shieldCharMoves[0][1] + attackCharMoves[0][1] > 0:
+                punishableMoves.append(attackCharMoves.pop(0))
+            
+            # punishOptions is now the limit of what moves can punish current punishableMoves
+            # punishableMoves is the limit of what moves can be punished by current punishOptions
+
+            punishList.append([punishOptions, punishableMoves])
+
+
+        
+
+        # Now get the opposite (shield safety of shieldChar's moves)
+        try:
+            shieldChar = request.GET['Opponent Character']
+            attackChar = request.GET['Your Character']
+            shieldCharData = Meleeoos.objects.filter(character=shieldChar)
+            attackCharData = Meleeframedata.objects.filter(character=attackChar)
+        except:
+            # Error if character names not chosen correctly
+            raise Http404("Character name does not exist. Please choose a name from the dropdown.")
+        else:
+            # get all shield character moves and their first frame OOS
+            # [name, frame oos, notes]
+            shieldCharMoves = []
+            for move in shieldCharData:
+                moveName = move.move
+                moveFrameComplete = move.frame
+                moveFrame = int(re.findall(r'\d+', moveFrameComplete)[0])
+                moveNotes = move.notes
+                shieldCharMoves.append([moveName, moveFrame, moveFrameComplete, moveNotes])
+
+            # once list is complete, sort by frame oos (least to greatest)
+            shieldCharMoves.sort(key = lambda x: x[1])
+
+            # get all attack character moves and parse their frame advantage
+            # [name, frame advantage, frame advantage full details]
+            attackCharMoves = []
+            for move in attackCharData:
+                # don't include grab and make sure advantage number exists
+                if move.move not in ("Grab", "Grab ", "Rapid Jabs Loop", "Pummel") and move.frame_advantage:
+                    moveName = move.move
+                    # get the highest value advantage number
+                    moveAdvantage = max(list(map(int, re.findall(r'[+-]?\d+', move.frame_advantage))))
+                    attackCharMoves.append([moveName, moveAdvantage, move.frame_advantage])
+            
+            # once list is complete, sort by frame advantage (greatest to least)
+            attackCharMoves.sort(key = lambda x: x[1], reverse=True)
+
+            # now create lists of which attackChar moves are punishable by which shieldChar moves on shield
+            # keep building solution starting from fastest shieldChar moves
+            
+            safeList = []
+            #if at start there are unpunishable moves
+            if shieldCharMoves[0][1] + attackCharMoves[0][1] > 0:
+                punishOptions = []
+                punishableMoves = []
+                # pop from attackCharMoves until punishable
+                while shieldCharMoves[0][1] + attackCharMoves[0][1] > 0:
+                    punishableMoves.append(attackCharMoves.pop(0))
+                safeList.append([punishOptions, punishableMoves])
+            
+            # end loop when no moves remain
+            while shieldCharMoves or attackCharMoves:
+                punishOptions = []
+                punishableMoves = []
+
+                # if there remains a move that cannot punish anything, just end
+                if not attackCharMoves:
+                    break
+
+                # move CANNOT be punished OOS if frame disadvantage + startup > 0
+                # move CAN be punished OOS if frame disadvantage + startup <= 0
+
+                # pop from shieldCharMoves until attackCharMove cannot be punished
+                while shieldCharMoves and shieldCharMoves[0][1] + attackCharMoves[0][1] <= 0:
+                    punishOptions.append(shieldCharMoves.pop(0))
+
+                # if no more shieldCharMoves, only attackCharMoves left so put all 
+                # remaining attackCharMoves into punishable moves and finish up
+                if not shieldCharMoves:
+                    while attackCharMoves:
+                        punishableMoves.append(attackCharMoves.pop(0))
+                    safeList.append([punishOptions, punishableMoves])
+                    break
+                    
+                # current attackCharMove is not punishable by shieldCharMove
+                # pop from attackCharMove until it CAN be punished by shieldCharMove
+                while attackCharMoves and shieldCharMoves[0][1] + attackCharMoves[0][1] > 0:
+                    punishableMoves.append(attackCharMoves.pop(0))
+                
+                # punishOptions is now the limit of what moves can punish current punishableMoves
+                # punishableMoves is the limit of what moves can be punished by current punishOptions
+
+                safeList.append([punishOptions, punishableMoves])
+
+        # Return all moves from each char
+        return render(request, 'matchups/meleematchup.html', {
             'punishList': punishList,
             'safeList': safeList,
             'shieldChar': request.GET['Your Character'],

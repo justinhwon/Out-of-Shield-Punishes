@@ -4,9 +4,10 @@
 
 <div class="p-2 mb-2 text-dark" style="background-color: rgba(128, 128, 128, 0.15);">
 <div class="text-center">
-<h1 style="font-size:32px;"><b>Get out of shield punishes for every matchup in Smash Ultimate!</b></h1>
-<h3 style="font-size:18px;">Alternatively, see which of your moves are safe on shield.</h3>
-<h3 style="font-size:15px;">Currently updated to patch 8.1.0</h3>
+<h1><b>Get out of shield punishes for every matchup in Smash Ultimate!</b></h1>
+<h3>Alternatively, see which of your moves are safe on shield.</h3>
+<h4>Currently updated to patch 8.1.0 <br><a href="{% url 'matchups:homemelee' %}">For Melee click here.</a>
+</h4>
 </div>
 </div>
 
@@ -213,8 +214,42 @@
 <title>Out of Shield Punishes Ultimate</title>
 <meta name="title" content="Out of Shield Punishes Ultimate">
 <meta name="description" content="Get out of shield punishes for all moves and matchups in Smash Ultimate. Alternatively, see which of your character's moves are safe on shield (unpunishable).">
-<meta name="keywords" content="out of shield, out of shield punishes, safe on shield, out of shield ultimate, out of shield options, out of shield smash ultimate, out of shield punishes ultimate, safe on shield ultimate, safe on shield smash ultimate, out of shield matchups, matchup info, matchups, on block, on shield, ultimate on shield, on shield punishes, smash ultimate, ultimate, smash bros, Super Smash Bros. Ultimate, Super Smash Bros. Ultimate matchups, competitive smash">
+<meta name="keywords" content="out of shield, out of shield punishes, safe on shield, out of shield ultimate, out of shield options, out of shield smash ultimate, out of shield punishes ultimate, safe on shield ultimate, safe on shield smash ultimate, out of shield matchups, matchup info, matchups, on block, on shield, ultimate on shield, on shield punishes, smash ultimate, ultimate, smash bros, Super Smash Bros. Ultimate, Super Smash Bros. Ultimate matchups, competitive smash, out of shield melee, melee">
 <meta name="robots" content="index, follow">
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
 <meta name="language" content="English">
+
+
+<style>
+  h1 {font-size:28px;}
+  h3 {font-size:18px;}
+  h4 {font-size:13px;}
+
+  @media (min-width: 544px) {  
+    h1 {font-size:32px;}
+    h3 {font-size:18px;}
+    h4 {font-size:13px;}
+  }
+  
+  /* Medium devices (tablets, 768px and up) The navbar toggle appears at this breakpoint */
+  @media (min-width: 768px) {  
+    h1 {font-size:32px;}
+    h3 {font-size:18px;}
+    h4 {font-size:13px;}
+  }
+  
+  /* Large devices (desktops, 992px and up) */
+  @media (min-width: 992px) { 
+    h1 {font-size:40px;}
+    h3 {font-size:24px;}
+    h4 {font-size:18px;}
+  }
+  
+  /* Extra large devices (large desktops, 1200px and up) */
+  @media (min-width: 992px) { 
+    h1 {font-size:40px;}
+    h3 {font-size:24px;}
+    h4 {font-size:18px;}
+  }
+</style>
 {% endblock %}

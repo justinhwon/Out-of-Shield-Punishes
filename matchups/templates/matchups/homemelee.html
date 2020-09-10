@@ -1,0 +1,147 @@
+{% extends "matchups/basemelee.html" %}
+
+{% block content %}
+
+<div class="p-2 mb-2 text-dark" style="background-color: rgba(128, 128, 128, 0.15);">
+<div class="text-center">
+<h1><b>Get out of shield punishes for every matchup in Melee!</b></h1>
+<h3>Alternatively, see which of your moves are safe on shield.</h3>
+<h4><a href="{% url 'matchups:homepage' %}">For Ultimate click here.</a></h4>
+</div>
+</div>
+
+<div class="text-center">
+    <form action="{% url 'matchups:meleematchup' %}" method="get">
+    
+      <label for="Your Character">Enter your character: &nbsp; &nbsp; &nbsp; &nbsp;</label>
+      <select class="selectpicker" data-live-search="true" data-live-search-style="startsWith" id="Your Character" name="Your Character" title="Enter character name..." required>
+        <option value="Bowser">Bowser</option>
+        <option value="Captain Falcon">Captain Falcon</option>
+        <option value="Donkey Kong">Donkey Kong</option>
+        <option value="Dr. Mario" data-tokens="Doctor">Dr. Mario</option>
+        <option value="Falco">Falco</option>
+        <option value="Fox">Fox</option>
+        <option value="Ganondorf">Ganondorf</option>
+        <option value="Ice Climbers" data-tokens="Climbers">Ice Climbers</option>
+        <option value="Jigglypuff">Jigglypuff</option>
+        <option value="Kirby">Kirby</option>
+        <option value="Link">Link</option>
+        <option value="Luigi">Luigi</option>
+        <option value="Mario">Mario</option>
+        <option value="Marth">Marth</option>
+        <option value="Mewtwo">Mewtwo</option>
+        <option value="Mr. Game & Watch" data-tokens="Game & Watch">Mr. Game & Watch</option>
+        <option value="Ness">Ness</option>
+        <option value="Peach">Peach</option>
+        <option value="Pichu">Pichu</option>
+        <option value="Pikachu">Pikachu</option>
+        <option value="Roy">Roy</option>
+        <option value="Samus">Samus</option>
+        <option value="Sheik">Sheik</option>
+        <option value="Yoshi">Yoshi</option>
+        <option value="Young Link">Young Link</option>
+        <option value="Zelda">Zelda</option>
+      </select>
+
+      <div style="height:7px;font-size:7px;">&nbsp;</div>
+
+
+      <label for="Opponent Character">Enter opponent character:</label>
+      <select class="selectpicker" data-live-search="true" data-live-search-style="startsWith" name="Opponent Character" id="Opponent Character" title="Enter character name..." required>
+        <option value="Bowser">Bowser</option>
+        <option value="Captain Falcon">Captain Falcon</option>
+        <option value="Donkey Kong">Donkey Kong</option>
+        <option value="Dr. Mario" data-tokens="Doctor">Dr. Mario</option>
+        <option value="Falco">Falco</option>
+        <option value="Fox">Fox</option>
+        <option value="Ganondorf">Ganondorf</option>
+        <option value="Ice Climbers" data-tokens="Climbers">Ice Climbers</option>
+        <option value="Jigglypuff">Jigglypuff</option>
+        <option value="Kirby">Kirby</option>
+        <option value="Link">Link</option>
+        <option value="Luigi">Luigi</option>
+        <option value="Mario">Mario</option>
+        <option value="Marth">Marth</option>
+        <option value="Mewtwo">Mewtwo</option>
+        <option value="Mr. Game & Watch" data-tokens="Game & Watch">Mr. Game & Watch</option>
+        <option value="Ness">Ness</option>
+        <option value="Peach">Peach</option>
+        <option value="Pichu">Pichu</option>
+        <option value="Pikachu">Pikachu</option>
+        <option value="Roy">Roy</option>
+        <option value="Samus">Samus</option>
+        <option value="Sheik">Sheik</option>
+        <option value="Yoshi">Yoshi</option>
+        <option value="Young Link">Young Link</option>
+        <option value="Zelda">Zelda</option>
+      </select>
+    
+      
+    
+      <div class="text">
+        <div style="height:8px;font-size:8px;">&nbsp;</div>
+        <button type="submit" class="btn btn-primary">Get punish options!</button>
+      </div>
+    </form>
+    </div>
+
+    <br>
+    <br>
+    <br> <br> <br> <br> <br> <br> <br> <br> <br> <br> <br> <br> <br> <br> <br> <br> <br> <br> <br> <br> <br> <br> <br> <br>
+
+    <!-- Footer -->
+    <footer class="footer">
+      <div class="container-fluid text-center text-md-right">
+      
+        <a href="{% url 'matchups:cookie' %}">Cookie Policy</a> &middot;
+        <a href="{% url 'matchups:privacy' %}">Privacy Policy</a> &middot;
+        <a href="{% url 'matchups:terms' %}">Terms & Conditions</a>
+      
+    </div>
+      
+    </footer>
+
+{% endblock %}
+
+{% block metadata %}
+<title>Out of Shield Punishes Melee</title>
+<meta name="title" content="Out of Shield Punishes Melee">
+<meta name="description" content="Get out of shield punishes for all moves and matchups in Smash Melee. Alternatively, see which of your character's moves are safe on shield (unpunishable).">
+<meta name="keywords" content="out of shield, out of shield punishes, safe on shield, out of shield melee, out of shield options, out of shield smash melee, out of shield punishes melee, safe on shield melee, safe on shield smash melee, out of shield matchups, matchup info, matchups, on block, on shield, melee on shield, on shield punishes, smash melee, melee, smash bros, Super Smash Bros. Melee, Super Smash Bros. Melee matchups, competitive smash, ssbm, out of shield ultimate, ultimate">
+<meta name="robots" content="index, follow">
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<meta name="language" content="English">
+
+<style>
+  h1 {font-size:28px;}
+  h3 {font-size:18px;}
+  h4 {font-size:13px;}
+
+  @media (min-width: 544px) {  
+    h1 {font-size:32px;}
+    h3 {font-size:18px;}
+    h4 {font-size:13px;}
+  }
+  
+  /* Medium devices (tablets, 768px and up) The navbar toggle appears at this breakpoint */
+  @media (min-width: 768px) {  
+    h1 {font-size:32px;}
+    h3 {font-size:18px;}
+    h4 {font-size:13px;}
+  }
+  
+  /* Large devices (desktops, 992px and up) */
+  @media (min-width: 992px) { 
+    h1 {font-size:40px;}
+    h3 {font-size:24px;}
+    h4 {font-size:18px;}
+  }
+  
+  /* Extra large devices (large desktops, 1200px and up) */
+  @media (min-width: 992px) { 
+    h1 {font-size:40px;}
+    h3 {font-size:24px;}
+    h4 {font-size:18px;}
+  }
+</style>
+{% endblock %}

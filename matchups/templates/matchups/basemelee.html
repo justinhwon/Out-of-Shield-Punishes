@@ -29,8 +29,8 @@
   </head>
   <body>
     <!-- Navbar at top of every page -->
-    <nav class="navbar navbar-expand-lg navbar-light" style="background-color: #ffcc00;">
-        <a class="navbar-brand" href="{% url 'matchups:homepage' %}" style=" font-weight: bold;">Out-of-Shield Ultimate</a>
+    <nav class="navbar navbar-expand-lg navbar-light" style="background-color: #321dee9f;">
+        <a class="navbar-brand" href="{% url 'matchups:homemelee' %}" style=" font-weight: bold;">Out-of-Shield Melee</a>
         <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
           <span class="navbar-toggler-icon"></span>
         </button>
@@ -38,16 +38,13 @@
         <div class="collapse navbar-collapse" id="navbarSupportedContent">
           <ul class="navbar-nav mr-auto">
             <li class="nav-item">
-              <a class="nav-link" href="{% url 'matchups:homepage' %}">Home</a>
+              <a class="nav-link" href="{% url 'matchups:homemelee' %}">Home</a>
             </li>
             <li class="nav-item">
-              <a class="nav-link" href="{% url 'matchups:homemelee' %}">Melee</a>
+              <a class="nav-link" href="{% url 'matchups:homepage' %}">Ultimate</a>
             </li>
             <li class="nav-item">
-              <a class="nav-link" href="{% url 'matchups:about' %}">About</a>
-            </li>
-            <li class="nav-item">
-              <a class="nav-link" href="{% url 'matchups:credits' %}">Credits</a>
+                <a class="nav-link" href="{% url 'matchups:credits' %}">Credits</a>
             </li>
           </ul>
         </div>
