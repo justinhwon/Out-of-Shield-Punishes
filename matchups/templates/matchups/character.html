@@ -1,0 +1,218 @@
+{% extends "matchups/base.html" %}
+
+{% block content %}
+<!--Title (character1 vs character2)-->
+<div class="p-2 mb-2 text-dark" style="background-color: rgba(128, 128, 128, 0.15);">
+  <div class="text-center">
+    <h2><b>{{character}}</b></h2>
+  </div>
+</div>
+
+<div style="text-align: center; margin-left:10px; margin-right:10px;">
+
+    <div style="display: inline-block; text-align: left;">
+
+    <div class="text-center">
+      <b>New Character Search</b>
+      <form action="{% url 'matchups:character' %}" method="get">
+        <select class="selectpicker" data-live-search="true" data-live-search-style="startsWith" id="Character" name="Character" title="Enter character name..." required>
+          <option value="Banjo & Kazooie">Banjo & Kazooie</option>
+          <option value="Bayonetta">Bayonetta</option>
+          <option value="Bowser">Bowser</option>
+          <option value="Bowser Jr." data-tokens="Jr.">Bowser Jr.</option>
+          <option value="Byleth">Byleth</option>
+          <option value="Captain Falcon">Captain Falcon</option>
+          <option value="Charizard">Charizard</option>
+          <option value="Chrom">Chrom</option>
+          <option value="Cloud">Cloud</option>
+          <option value="Corrin">Corrin</option>
+          <option value="Diddy Kong">Diddy Kong</option>
+          <option value="Donkey Kong">Donkey Kong</option>
+          <option value="Dr. Mario" data-tokens="Doctor">Dr. Mario</option>
+          <option value="Duck Hunt">Duck Hunt</option>
+          <option value="Falco">Falco</option>
+          <option value="Fox">Fox</option>
+          <option value="Ganondorf">Ganondorf</option>
+          <option value="Greninja">Greninja</option>
+          <option value="Hero">Hero</option>
+          <option value="Ice Climbers" data-tokens="Climbers">Ice Climbers</option>
+          <option value="Ike">Ike</option>
+          <option value="Incineroar">Incineroar</option>
+          <option value="Inkling">Inkling</option>
+          <option value="Isabelle">Isabelle</option>
+          <option value="Ivysaur">Ivysaur</option>
+          <option value="Jigglypuff">Jigglypuff</option>
+          <option value="Joker">Joker</option>
+          <option value="Ken">Ken</option>
+          <option value="King Dedede" data-tokens="Dedede">King Dedede</option>
+          <option value="King K. Rool" data-tokens="K Rool">King K. Rool</option>
+          <option value="Kirby">Kirby</option>
+          <option value="Link">Link</option>
+          <option value="Little Mac">Little Mac</option>
+          <option value="Lucario">Lucario</option>
+          <option value="Lucas">Lucas</option>
+          <option value="Lucina">Lucina</option>
+          <option value="Luigi">Luigi</option>
+          <option value="Mario">Mario</option>
+          <option value="Marth">Marth</option>
+          <option value="Mega Man">Mega Man</option>
+          <option value="Meta Knight">Meta Knight</option>
+          <option value="Mewtwo">Mewtwo</option>
+          <option value="Mii Brawler" data-tokens="Brawler">Mii Brawler</option>
+          <option value="Mii Gunner" data-tokens="Gunner">Mii Gunner</option>
+          <option value="Mii Swordfighter" data-tokens="Swordfighter">Mii Swordfighter</option>
+          <option value="Min Min">Min Min</option>
+          <option value="Mr. Game & Watch" data-tokens="Game & Watch">Mr. Game & Watch</option>
+          <option value="Ness">Ness</option>
+          <option value="Olimar">Olimar</option>
+          <option value="Pac-Man">Pac-Man</option>
+          <option value="Palutena">Palutena</option>
+          <option value="Peach/Daisy" data-tokens="Daisy">Peach/Daisy</option>
+          <option value="Pichu">Pichu</option>
+          <option value="Pikachu">Pikachu</option>
+          <option value="Piranha Plant" data-tokens="Plant">Piranha Plant</option>
+          <option value="Pit/Dark Pit" data-tokens="Dark Pit">Pit/Dark Pit</option>
+          <option value="Ridley">Ridley</option>
+          <option value="R.O.B." data-tokens="ROB">R.O.B.</option>
+          <option value="Robin">Robin</option>
+          <option value="Rosalina & Luma">Rosalina & Luma</option>
+          <option value="Roy">Roy</option>
+          <option value="Ryu">Ryu</option>
+          <option value="Samus/Dark Samus" data-tokens="Dark Samus">Samus/Dark Samus</option>
+          <option value="Sheik">Sheik</option>
+          <option value="Shulk">Shulk</option>
+          <option value="Simon/Richter" data-tokens="Richter">Simon/Richter</option>
+          <option value="Snake">Snake</option>
+          <option value="Sonic">Sonic</option>
+          <option value="Squirtle">Squirtle</option>
+          <option value="Terry">Terry</option>
+          <option value="Toon Link">Toon Link</option>
+          <option value="Villager">Villager</option>
+          <option value="Wario">Wario</option>
+          <option value="Wii Fit Trainer">Wii Fit Trainer</option>
+          <option value="Wolf">Wolf</option>
+          <option value="Yoshi">Yoshi</option>
+          <option value="Young Link">Young Link</option>
+          <option value="Zelda">Zelda</option>
+          <option value="Zero Suit Samus">Zero Suit Samus</option>
+        </select>
+        <button class="btn btn-outline-primary" type="submit">Search</button>
+      </form>
+      </div>
+      <br>
+
+      
+
+        <!-- Button Group to Toggle OOS/Safety -->
+        <div class="text-center">
+          <div class="btn-group btn-group-toggle" data-toggle="buttons">
+            <label class="btn btn-secondary active" onclick="showOosInfo()">
+              <input type="radio" name="options" id="option1" autocomplete="off" checked> Out-of-Shield Options
+            </label>
+            <label class="btn btn-secondary" onclick="showSafetyInfo()">
+              <input type="radio" name="options" id="option2" autocomplete="off"> Shield Safety of Moves
+            </label>
+          </div>
+          <br><br>
+        </div>
+
+        <script>
+          function showOosInfo() {
+            var x = document.getElementById("oosinfo");
+            var y = document.getElementById("safetyinfo");
+            if (x.style.display === "none") {
+              x.style.display = "block";
+              y.style.display = "none";
+            }
+          }
+          function showSafetyInfo() {
+            var x = document.getElementById("safetyinfo");
+            var y = document.getElementById("oosinfo");
+            if (x.style.display === "none") {
+              x.style.display = "block";
+              y.style.display = "none";
+            }
+          }
+        </script>
+
+        <!-- OOS Punish Info -->
+        <div id="oosinfo">
+        
+            <div class="p-3 mb-0 text-dark" style="background-color: rgba(128, 128, 128, 0.1);">
+            <h3><b>Out of Shield Options</b></h3>
+
+            <b>Out of Shield option format:</b> <br>
+            "Move: Frame Active OOS [Startup Frames]" <br>
+            <hr>
+
+                {% for move in oosList %}
+                    <b>{{move.0}}:</b> {{move.1}} Frames &nbsp;[{{move.3}}]<br>
+                    <div style="height:8px;font-size:8px;">&nbsp;</div>
+                {% endfor %}
+            </div>
+
+        </div>
+
+        <!-- Shield Safety Info -->
+        <div id="safetyinfo" style="display: none">
+
+            <div class="p-3 mb-0 text-dark" style="background-color: rgba(128, 128, 128, 0.1);">
+            <h3><b>Shield Safety of Moves </b></h3>
+
+            <b>Attack on shield format:</b> <br>
+            "Move: Least Frames Negative on Shield [All Possible Frame Advantage on Shield]" <br>
+            <hr>
+
+                {% for move in safetyList %}
+                    <b>{{move.0}}:</b> {% if move.1 >= 0 %} +{{move.1}} {% else %} {{move.1}} {% endif %} Frames &nbsp;[{{move.2}}]<br>
+                    <div style="height:8px;font-size:8px;">&nbsp;</div>
+                {% endfor %}
+
+            </div>
+      
+        </div>
+
+        <br> <br>
+        
+        <br><br><br>
+
+        <!-- debugging statements
+        <br>
+
+        {% for move in shieldFrame %}
+            {{move.0}}: {{move.1}} &nbsp;[{{move.3}}]<br>
+        {% endfor %}
+
+        <br>
+
+        {% for move in attackFrame %}
+            {{move.0}}: {{move.1}} &nbsp;[{{move.2}}]<br>
+        {% endfor %}
+
+        <br>
+
+        {% for move in shieldCharData %}
+            {{move.move}}: {{move.startup}} <br>
+        {% endfor %}
+
+        <br>
+
+        {% for move in attackCharData %}
+            {{move.move}}: {{move.advantage}} <br>
+        {% endfor %}
+
+        -->
+    </div>
+</div>
+
+{% endblock %}
+
+{% block metadata %}
+<title>{{character}}</title>
+<meta name="title" content="{{character}}">
+<meta name="description" content="Out of shield options and shield safety of moves for {{character}}.">
+<meta name="keywords" content="{{character}}, {{character}} out of shield, {{character}} shield safety, {{character}} safe on shield, out of shield, out of shield options, out of shield ultimate, smash ultimate out of shield options, on block, on shield, ultimate on shield, smash ultimate, ultimate, smash bros, Super Smash Bros. Ultimate, competitive smash">
+<meta name="robots" content="index, follow">
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<meta name="language" content="English">
+{% endblock %}

@@ -539,3 +539,124 @@ def MeleeMatchupSearchView(request):
             'shieldChar': request.GET['Your Character'],
             'attackChar': request.GET['Opponent Character'],
         })
+
+# get out of shield options and shield safety of moves for a specific character
+def CharacterView(request):
+    try:
+        shieldChar = request.GET['Character']
+        shieldCharData = Framedata.objects.filter(character=shieldChar)
+    except:
+        # Error if character names not chosen correctly
+        raise Http404("Character name does not exist. Please choose a name from the dropdown.")
+    else:
+        # get all shield character moves and calculate their first frame OOS
+        # [name, frame oos, first frame not oos, frame data]
+        shieldCharMoves = []
+        for move in shieldCharData:
+            # moves that require dropping shield add 11 frames
+            if move.move in ("Jab 1", "Jab", "F-Tilt", "U-Tilt", "D-Tilt", "F-Smash", "D-Smash", "Jab 1 ", "Jab ", "F-Tilt ", "U-Tilt ", "D-Tilt ", "F-Smash ", "D-Smash ", "F-Smash (early)", "D-Smash (early)"):
+                moveName = move.move
+                moveStartupComplete = move.startup
+                moveStartupFrame = int(re.findall(r'\d+', moveStartupComplete)[0])
+                moveFrame = moveStartupFrame + 11
+                shieldCharMoves.append([moveName, moveFrame, moveStartupFrame, moveStartupComplete])
+            # aerials add 3 frames
+            elif move.move in ("F-Air", "F-Air ", "N-Air", "N-Air ", "B-Air", "B-Air ", "D-Air", "D-Air ", "U-Air", "U-Air ", "Z-Air", "Z-Air ", "N-Air (either Dragon)", "N-Air (Ramram)", "N-Air (Megawatt)"):
+                moveName = move.move
+                moveStartupComplete = move.startup
+                moveStartupFrame = int(re.findall(r'\d+', moveStartupComplete)[0])
+                moveFrame = moveStartupFrame + 3
+                shieldCharMoves.append([moveName, moveFrame, moveStartupFrame, moveStartupComplete])
+            # grabs add 4 frames
+            elif move.move in ("Grab", "Grab "):
+                moveName = move.move
+                moveStartupComplete = move.startup
+                moveStartupFrame = int(re.findall(r'\d+', moveStartupComplete)[0])
+                moveFrame = moveStartupFrame + 4
+                shieldCharMoves.append([moveName, moveFrame, moveStartupFrame, moveStartupComplete])
+            # Dash attacks add 12 frames (11 shield drop + 1 to start dash)
+            elif move.move in ("Dash Attack", "Dash Attack "):
+                moveName = move.move
+                moveStartupComplete = move.startup
+                moveStartupFrame = int(re.findall(r'\d+', moveStartupComplete)[0])
+                moveFrame = moveStartupFrame + 12
+                shieldCharMoves.append([moveName, moveFrame, moveStartupFrame, moveStartupComplete])
+            # Up-B and Upsmash are instantaneous
+            elif "(Up-B)" in move.move or move.move in ("U-Smash", "U-Smash "):
+                # some up-b are not attacks (e.g. teleport), so just skip
+                if not move.startup:
+                    continue
+                moveName = move.move
+                moveStartupComplete = move.startup
+                moveStartupFrame = int(re.findall(r'\d+', moveStartupComplete)[0])
+                moveFrame = moveStartupFrame
+                shieldCharMoves.append([moveName, moveFrame, moveStartupFrame, moveStartupComplete])
+            #don't include other moves
+
+        # once list is complete, sort by frame oos (least to greatest)
+        shieldCharMoves.sort(key = lambda x: x[1])
+
+        # get all attack character (which is same as shielding for character search) moves and parse their frame advantage
+        # [name, frame advantage]
+        attackCharMoves = []
+        for move in shieldCharData:
+            # don't include grab and make sure advantage number exists
+            if move.move not in ("Grab", "Grab ") and move.advantage:
+                moveName = move.move
+                # get the highest value advantage number
+                moveAdvantage = max(list(map(int, re.findall(r'[+-]?\d+', move.advantage))))
+                attackCharMoves.append([moveName, moveAdvantage, move.advantage])
+        
+        # once list is complete, sort by frame advantage (greatest to least)
+        attackCharMoves.sort(key = lambda x: x[1], reverse=True)
+
+        # Return all moves from each char
+        return render(request, 'matchups/character.html', {
+            'oosList': shieldCharMoves,
+            'safetyList': attackCharMoves,
+            'character': shieldChar,
+        })
+
+# get out of shield options and shield safety of moves for a specific melee character
+def MeleeCharacterView(request):
+    try:
+        shieldChar = request.GET['Character']
+        shieldCharData = Meleeoos.objects.filter(character=shieldChar) #oos data separate from on block
+        attackCharData = Meleeframedata.objects.filter(character=shieldChar)
+    except:
+        # Error if character names not chosen correctly
+        raise Http404("Character name does not exist. Please choose a name from the dropdown.")
+    else:
+        # get all shield character moves and their first frame OOS
+        # [name, frame oos, notes]
+        shieldCharMoves = []
+        for move in shieldCharData:
+            moveName = move.move
+            moveFrameComplete = move.frame
+            moveFrame = int(re.findall(r'\d+', moveFrameComplete)[0])
+            moveNotes = move.notes
+            shieldCharMoves.append([moveName, moveFrame, moveFrameComplete, moveNotes])
+
+        # once list is complete, sort by frame oos (least to greatest)
+        shieldCharMoves.sort(key = lambda x: x[1])
+
+        # get all attack character moves (which is same as shielding for character search) and parse their frame advantage
+        # [name, frame advantage, frame advantage full details]
+        attackCharMoves = []
+        for move in attackCharData:
+            # don't include grab and make sure advantage number exists
+            if move.move not in ("Grab", "Grab ", "Rapid Jabs Loop", "Pummel") and move.frame_advantage:
+                moveName = move.move
+                # get the highest value advantage number
+                moveAdvantage = max(list(map(int, re.findall(r'[+-]?\d+', move.frame_advantage))))
+                attackCharMoves.append([moveName, moveAdvantage, move.frame_advantage])
+        
+        # once list is complete, sort by frame advantage (greatest to least)
+        attackCharMoves.sort(key = lambda x: x[1], reverse=True)
+
+        # Return all moves from each char
+        return render(request, 'matchups/meleecharacter.html', {
+            'oosList': shieldCharMoves,
+            'safetyList': attackCharMoves,
+            'character': shieldChar,
+        })

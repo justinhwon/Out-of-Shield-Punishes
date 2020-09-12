@@ -1,0 +1,164 @@
+{% extends "matchups/basemelee.html" %}
+
+{% block content %}
+<!--Title (character1 vs character2)-->
+<div class="p-2 mb-2 text-dark" style="background-color: rgba(128, 128, 128, 0.15);">
+  <div class="text-center">
+    <h2><b>{{character}}</b></h2>
+  </div>
+</div>
+
+<div style="text-align: center; margin-left:10px; margin-right:10px;">
+
+    <div style="display: inline-block; text-align: left;">
+
+    <div class="text-center">
+      <b>New Character Search</b>
+      <form action="{% url 'matchups:meleecharacter' %}" method="get">
+        <select class="selectpicker" data-live-search="true" data-live-search-style="startsWith" id="Character" name="Character" title="Enter character name..." required>
+            <option value="Bowser">Bowser</option>
+            <option value="Captain Falcon">Captain Falcon</option>
+            <option value="Donkey Kong">Donkey Kong</option>
+            <option value="Dr. Mario" data-tokens="Doctor">Dr. Mario</option>
+            <option value="Falco">Falco</option>
+            <option value="Fox">Fox</option>
+            <option value="Ganondorf">Ganondorf</option>
+            <option value="Ice Climbers" data-tokens="Climbers">Ice Climbers</option>
+            <option value="Jigglypuff">Jigglypuff</option>
+            <option value="Kirby">Kirby</option>
+            <option value="Link">Link</option>
+            <option value="Luigi">Luigi</option>
+            <option value="Mario">Mario</option>
+            <option value="Marth">Marth</option>
+            <option value="Mewtwo">Mewtwo</option>
+            <option value="Mr. Game & Watch" data-tokens="Game & Watch">Mr. Game & Watch</option>
+            <option value="Ness">Ness</option>
+            <option value="Peach">Peach</option>
+            <option value="Pichu">Pichu</option>
+            <option value="Pikachu">Pikachu</option>
+            <option value="Roy">Roy</option>
+            <option value="Samus">Samus</option>
+            <option value="Sheik">Sheik</option>
+            <option value="Yoshi">Yoshi</option>
+            <option value="Young Link">Young Link</option>
+            <option value="Zelda">Zelda</option>
+        </select>
+        <button class="btn btn-outline-primary" type="submit">Search</button>
+      </form>
+    </div>
+    <br>
+
+      
+
+        <!-- Button Group to Toggle OOS/Safety -->
+        <div class="text-center">
+          <div class="btn-group btn-group-toggle" data-toggle="buttons">
+            <label class="btn btn-secondary active" onclick="showOosInfo()">
+              <input type="radio" name="options" id="option1" autocomplete="off" checked> Out-of-Shield Options
+            </label>
+            <label class="btn btn-secondary" onclick="showSafetyInfo()">
+              <input type="radio" name="options" id="option2" autocomplete="off"> Shield Safety of Moves
+            </label>
+          </div>
+          <br><br>
+        </div>
+
+        <script>
+          function showOosInfo() {
+            var x = document.getElementById("oosinfo");
+            var y = document.getElementById("safetyinfo");
+            if (x.style.display === "none") {
+              x.style.display = "block";
+              y.style.display = "none";
+            }
+          }
+          function showSafetyInfo() {
+            var x = document.getElementById("safetyinfo");
+            var y = document.getElementById("oosinfo");
+            if (x.style.display === "none") {
+              x.style.display = "block";
+              y.style.display = "none";
+            }
+          }
+        </script>
+
+        <!-- OOS Punish Info -->
+        <div id="oosinfo">
+        
+            <div class="p-3 mb-0 text-dark" style="background-color: rgba(128, 128, 128, 0.1);">
+            <h3><b>Out of Shield Options</b></h3>
+
+            <b>Out of Shield option format:</b> <br>
+            "Move: Frame Active OOS [Startup Frames]" <br>
+            <hr>
+            {% for move in oosList %}
+                <b>{{move.0}}:</b> {{move.2}} {% if move.3 %} {{move.3}} {% endif %}<br>
+                <div style="height:8px;font-size:8px;">&nbsp;</div>
+            {% endfor %}
+            </div>
+
+        </div>
+
+        <!-- Shield Safety Info -->
+        <div id="safetyinfo" style="display: none">
+
+            <div class="p-3 mb-0 text-dark" style="background-color: rgba(128, 128, 128, 0.1);">
+            <h3><b>Shield Safety of Moves </b></h3>
+
+            <b>Attack on shield format:</b> <br>
+            "Move: Least Frames Negative on Shield [All Possible Frame Advantage on Shield]" <br>
+            <hr>
+
+                {% for move in safetyList %}
+                    <b>{{move.0}}:</b> {% if move.1 >= 0 %} +{{move.1}} {% else %} {{move.1}} {% endif %} Frames &nbsp;[{{move.2}}]<br>
+                    <div style="height:8px;font-size:8px;">&nbsp;</div>
+                {% endfor %}
+
+            </div>
+      
+        </div>
+
+        <br> <br>
+        
+        <br><br><br>
+
+        <!-- debugging statements
+        <br>
+
+        {% for move in shieldFrame %}
+            {{move.0}}: {{move.1}} &nbsp;[{{move.3}}]<br>
+        {% endfor %}
+
+        <br>
+
+        {% for move in attackFrame %}
+            {{move.0}}: {{move.1}} &nbsp;[{{move.2}}]<br>
+        {% endfor %}
+
+        <br>
+
+        {% for move in shieldCharData %}
+            {{move.move}}: {{move.startup}} <br>
+        {% endfor %}
+
+        <br>
+
+        {% for move in attackCharData %}
+            {{move.move}}: {{move.advantage}} <br>
+        {% endfor %}
+
+        -->
+    </div>
+</div>
+
+{% endblock %}
+
+{% block metadata %}
+<title>Melee: {{character}}</title>
+<meta name="title" content="Melee: {{character}}">
+<meta name="description" content="Out of shield options and shield safety of moves for {{character}}.">
+<meta name="keywords" content="{{character}}, {{character}} out of shield, {{character}} shield safety, {{character}} safe on shield, out of shield, out of shield options, out of shield melee, melee out of shield options, on block, on shield, melee on shield, melee, ssbm, smash bros, Super Smash Bros. Melee, competitive smash">
+<meta name="robots" content="index, follow">
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<meta name="language" content="English">
+{% endblock %}
