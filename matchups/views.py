@@ -112,6 +112,50 @@ def MatchupSearchView(request):
                 moveFrame = moveStartupFrame
                 shieldCharMoves.append([moveName, moveFrame, moveStartupFrame, moveStartupComplete])
             #don't include other moves
+        
+        # reset and do something completely different if character is Steve
+        if shieldChar == "Steve":
+            shieldCharMoves = []
+            for move in shieldCharData:
+                # moves that require dropping shield add 7 frames (Craft Table cancel)
+                if move.move in ("Jab 1", "Jab", "Jab (Gold)", "F-Tilt", "U-Tilt", "D-Tilt", "F-Smash", "F-Smash (Gold)", "D-Smash", "Jab 1 ", "Jab ", "F-Tilt ", "U-Tilt ", "D-Tilt ", "F-Smash ", "D-Smash ", "F-Smash (early)", "D-Smash (early)"):
+                    moveName = move.move
+                    moveStartupComplete = move.startup
+                    moveStartupFrame = int(re.findall(r'\d+', moveStartupComplete)[0])
+                    moveFrame = moveStartupFrame + 7
+                    shieldCharMoves.append([moveName, moveFrame, moveStartupFrame, moveStartupComplete])
+                # aerials add 3 frames
+                elif move.move in ("N-Air", "N-Air ", "N-Air (Gold)", "D-Air", "D-Air ", "U-Air", "U-Air ", "U-Air (Gold)"):
+                    moveName = move.move
+                    moveStartupComplete = move.startup
+                    moveStartupFrame = int(re.findall(r'\d+', moveStartupComplete)[0])
+                    moveFrame = moveStartupFrame + 3
+                    shieldCharMoves.append([moveName, moveFrame, moveStartupFrame, moveStartupComplete])
+                # grabs add 4 frames
+                elif move.move in ("Grab", "Grab "):
+                    moveName = move.move
+                    moveStartupComplete = move.startup
+                    moveStartupFrame = int(re.findall(r'\d+', moveStartupComplete)[0])
+                    moveFrame = moveStartupFrame + 4
+                    shieldCharMoves.append([moveName, moveFrame, moveStartupFrame, moveStartupComplete])
+                # Dash attacks add 8 frames (7 shield drop + 1 to start dash)
+                elif move.move in ("Dash Attack", "Dash Attack (Gold)"):
+                    moveName = move.move
+                    moveStartupComplete = move.startup
+                    moveStartupFrame = int(re.findall(r'\d+', moveStartupComplete)[0])
+                    moveFrame = moveStartupFrame + 8
+                    shieldCharMoves.append([moveName, moveFrame, moveStartupFrame, moveStartupComplete])
+                # Up-B and Upsmash are instantaneous
+                elif "(Up-B)" in move.move or move.move in ("U-Smash", "U-Smash ") or move.move in ("SH F-Air", "SH B-Air"):
+                    # some up-b are not attacks (e.g. teleport), so just skip
+                    if not move.startup:
+                        continue
+                    moveName = move.move
+                    moveStartupComplete = move.startup
+                    moveStartupFrame = int(re.findall(r'\d+', moveStartupComplete)[0])
+                    moveFrame = moveStartupFrame
+                    shieldCharMoves.append([moveName, moveFrame, moveStartupFrame, moveStartupComplete])
+
 
         # once list is complete, sort by frame oos (least to greatest)
         shieldCharMoves.sort(key = lambda x: x[1])
@@ -288,6 +332,50 @@ def MatchupSearchView(request):
                     moveFrame = moveStartupFrame
                     shieldCharMoves.append([moveName, moveFrame, moveStartupFrame, moveStartupComplete])
                 #don't include other moves
+
+            # reset and do something completely different if character is Steve
+            if shieldChar == "Steve":
+                shieldCharMoves = []
+                for move in shieldCharData:
+                    # moves that require dropping shield add 7 frames (Craft Table cancel)
+                    if move.move in ("Jab 1", "Jab", "Jab (Gold)", "F-Tilt", "U-Tilt", "D-Tilt", "F-Smash", "F-Smash (Gold)", "D-Smash", "Jab 1 ", "Jab ", "F-Tilt ", "U-Tilt ", "D-Tilt ", "F-Smash ", "D-Smash ", "F-Smash (early)", "D-Smash (early)"):
+                        moveName = move.move
+                        moveStartupComplete = move.startup
+                        moveStartupFrame = int(re.findall(r'\d+', moveStartupComplete)[0])
+                        moveFrame = moveStartupFrame + 7
+                        shieldCharMoves.append([moveName, moveFrame, moveStartupFrame, moveStartupComplete])
+                    # aerials add 3 frames
+                    elif move.move in ("N-Air", "N-Air ", "N-Air (Gold)", "D-Air", "D-Air ", "U-Air", "U-Air ", "U-Air (Gold)"):
+                        moveName = move.move
+                        moveStartupComplete = move.startup
+                        moveStartupFrame = int(re.findall(r'\d+', moveStartupComplete)[0])
+                        moveFrame = moveStartupFrame + 3
+                        shieldCharMoves.append([moveName, moveFrame, moveStartupFrame, moveStartupComplete])
+                    # grabs add 4 frames
+                    elif move.move in ("Grab", "Grab "):
+                        moveName = move.move
+                        moveStartupComplete = move.startup
+                        moveStartupFrame = int(re.findall(r'\d+', moveStartupComplete)[0])
+                        moveFrame = moveStartupFrame + 4
+                        shieldCharMoves.append([moveName, moveFrame, moveStartupFrame, moveStartupComplete])
+                    # Dash attacks add 8 frames (7 shield drop + 1 to start dash)
+                    elif move.move in ("Dash Attack", "Dash Attack (Gold)"):
+                        moveName = move.move
+                        moveStartupComplete = move.startup
+                        moveStartupFrame = int(re.findall(r'\d+', moveStartupComplete)[0])
+                        moveFrame = moveStartupFrame + 8
+                        shieldCharMoves.append([moveName, moveFrame, moveStartupFrame, moveStartupComplete])
+                    # Up-B and Upsmash are instantaneous
+                    elif "(Up-B)" in move.move or move.move in ("U-Smash", "U-Smash ") or move.move in ("SH F-Air", "SH B-Air"):
+                        # some up-b are not attacks (e.g. teleport), so just skip
+                        if not move.startup:
+                            continue
+                        moveName = move.move
+                        moveStartupComplete = move.startup
+                        moveStartupFrame = int(re.findall(r'\d+', moveStartupComplete)[0])
+                        moveFrame = moveStartupFrame
+                        shieldCharMoves.append([moveName, moveFrame, moveStartupFrame, moveStartupComplete])
+                
 
             # once list is complete, sort by frame oos (least to greatest)
             shieldCharMoves.sort(key = lambda x: x[1])
@@ -592,6 +680,49 @@ def CharacterView(request):
                 moveFrame = moveStartupFrame
                 shieldCharMoves.append([moveName, moveFrame, moveStartupFrame, moveStartupComplete])
             #don't include other moves
+
+        # reset and do something completely different if character is Steve
+        if shieldChar == "Steve":
+            shieldCharMoves = []
+            for move in shieldCharData:
+                # moves that require dropping shield add 7 frames (Craft Table cancel)
+                if move.move in ("Jab 1", "Jab", "Jab (Gold)", "F-Tilt", "U-Tilt", "D-Tilt", "F-Smash", "F-Smash (Gold)", "D-Smash", "Jab 1 ", "Jab ", "F-Tilt ", "U-Tilt ", "D-Tilt ", "F-Smash ", "D-Smash ", "F-Smash (early)", "D-Smash (early)"):
+                    moveName = move.move
+                    moveStartupComplete = move.startup
+                    moveStartupFrame = int(re.findall(r'\d+', moveStartupComplete)[0])
+                    moveFrame = moveStartupFrame + 7
+                    shieldCharMoves.append([moveName, moveFrame, moveStartupFrame, moveStartupComplete])
+                # aerials add 3 frames
+                elif move.move in ("N-Air", "N-Air ", "N-Air (Gold)", "D-Air", "D-Air ", "U-Air", "U-Air ", "U-Air (Gold)"):
+                    moveName = move.move
+                    moveStartupComplete = move.startup
+                    moveStartupFrame = int(re.findall(r'\d+', moveStartupComplete)[0])
+                    moveFrame = moveStartupFrame + 3
+                    shieldCharMoves.append([moveName, moveFrame, moveStartupFrame, moveStartupComplete])
+                # grabs add 4 frames
+                elif move.move in ("Grab", "Grab "):
+                    moveName = move.move
+                    moveStartupComplete = move.startup
+                    moveStartupFrame = int(re.findall(r'\d+', moveStartupComplete)[0])
+                    moveFrame = moveStartupFrame + 4
+                    shieldCharMoves.append([moveName, moveFrame, moveStartupFrame, moveStartupComplete])
+                # Dash attacks add 8 frames (7 shield drop + 1 to start dash)
+                elif move.move in ("Dash Attack", "Dash Attack (Gold)"):
+                    moveName = move.move
+                    moveStartupComplete = move.startup
+                    moveStartupFrame = int(re.findall(r'\d+', moveStartupComplete)[0])
+                    moveFrame = moveStartupFrame + 8
+                    shieldCharMoves.append([moveName, moveFrame, moveStartupFrame, moveStartupComplete])
+                # Up-B and Upsmash are instantaneous
+                elif "(Up-B)" in move.move or move.move in ("U-Smash", "U-Smash ") or move.move in ("SH F-Air", "SH B-Air"):
+                    # some up-b are not attacks (e.g. teleport), so just skip
+                    if not move.startup:
+                        continue
+                    moveName = move.move
+                    moveStartupComplete = move.startup
+                    moveStartupFrame = int(re.findall(r'\d+', moveStartupComplete)[0])
+                    moveFrame = moveStartupFrame
+                    shieldCharMoves.append([moveName, moveFrame, moveStartupFrame, moveStartupComplete])
 
         # once list is complete, sort by frame oos (least to greatest)
         shieldCharMoves.sort(key = lambda x: x[1])
