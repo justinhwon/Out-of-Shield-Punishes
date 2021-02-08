@@ -12,6 +12,9 @@
     <!-- Latest compiled and minified CSS for bootstrap-select -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.13.1/css/bootstrap-select.min.css">
 
+    <!-- Line Awesome Icons -->
+    <link rel="stylesheet" href="https://maxst.icons8.com/vue-static/landings/line-awesome/line-awesome/1.3.0/css/line-awesome.min.css">
+
     <!-- Global site tag (gtag.js) - Google Analytics -->
     <script async src="https://www.googletagmanager.com/gtag/js?id=UA-170900949-1"></script>
     <script>
@@ -38,13 +41,13 @@
         <div class="collapse navbar-collapse" id="navbarSupportedContent">
           <ul class="navbar-nav mr-auto">
             <li class="nav-item">
-              <a class="nav-link" href="{% url 'matchups:homemelee' %}">Home</a>
+              <a class="nav-link" href="{% url 'matchups:homemelee' %}"><i class="las la-home"></i>Home</a>
             </li>
             <li class="nav-item">
-              <a class="nav-link" href="{% url 'matchups:homepage' %}">Ultimate</a>
+              <a class="nav-link" href="{% url 'matchups:homepage' %}"><i class="las la-random"></i>Ultimate</a>
             </li>
             <li class="nav-item">
-                <a class="nav-link" href="{% url 'matchups:credits' %}">Credits</a>
+                <a class="nav-link" href="{% url 'matchups:credits' %}"><i class="las la-award"></i>Credits</a>
             </li>
           </ul>
         </div>
