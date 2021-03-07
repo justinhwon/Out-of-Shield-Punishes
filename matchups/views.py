@@ -714,7 +714,7 @@ def CharacterView(request):
                     moveFrame = moveStartupFrame + 8
                     shieldCharMoves.append([moveName, moveFrame, moveStartupFrame, moveStartupComplete])
                 # Up-B and Upsmash are instantaneous
-                elif "(Up-B)" in move.move or move.move in ("U-Smash", "U-Smash ") or move.move in ("SH F-Air", "SH B-Air"):
+                elif "(Up-B)" in move.move or "(Jump OOS)" in move.move or move.move in ("U-Smash", "U-Smash ") or move.move in ("SH F-Air", "SH B-Air"):
                     # some up-b are not attacks (e.g. teleport), so just skip
                     if not move.startup:
                         continue
