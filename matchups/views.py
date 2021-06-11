@@ -74,7 +74,7 @@ def MatchupSearchView(request):
         shieldCharMoves = []
         for move in shieldCharData:
             # moves that require dropping shield add 11 frames
-            if move.move in ("Jab 1", "Jab", "F-Tilt", "U-Tilt", "D-Tilt", "F-Smash", "D-Smash", "Jab 1 ", "Jab ", "F-Tilt ", "U-Tilt ", "D-Tilt ", "F-Smash ", "D-Smash ", "F-Smash (early)", "D-Smash (early)"):
+            if move.move in ("Jab 1", "Jab", "Jab 1 (light)", "F-Tilt", "U-Tilt", "D-Tilt", "F-Smash", "D-Smash", "Jab 1 ", "Jab ", "F-Tilt ", "U-Tilt ", "D-Tilt ", "F-Smash ", "D-Smash ", "F-Smash (early)", "D-Smash (early)"):
                 moveName = move.move
                 moveStartupComplete = move.startup
                 moveStartupFrame = int(re.findall(r'\d+', moveStartupComplete)[0])
