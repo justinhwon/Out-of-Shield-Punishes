@@ -86,6 +86,9 @@ def MatchupSearchView(request):
                 moveStartupComplete = move.startup
                 moveStartupFrame = int(re.findall(r'\d+', moveStartupComplete)[0])
                 moveFrame = moveStartupFrame + 3
+                # Kazuya jump squat is 7 frames instead of the normal 3
+                if shieldChar == "Kazuya":
+                    moveFrame = moveStartupFrame + 7
                 shieldCharMoves.append([moveName, moveFrame, moveStartupFrame, moveStartupComplete])
             # grabs add 4 frames
             elif move.move in ("Grab", "Grab "):
@@ -306,6 +309,9 @@ def MatchupSearchView(request):
                     moveStartupComplete = move.startup
                     moveStartupFrame = int(re.findall(r'\d+', moveStartupComplete)[0])
                     moveFrame = moveStartupFrame + 3
+                    # Kazuya jump squat is 7 frames instead of the normal 3
+                    if shieldChar == "Kazuya":
+                        moveFrame = moveStartupFrame + 7
                     shieldCharMoves.append([moveName, moveFrame, moveStartupFrame, moveStartupComplete])
                 # grabs add 4 frames
                 elif move.move in ("Grab", "Grab "):
